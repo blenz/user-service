@@ -1,24 +1,24 @@
 package service
 
 import (
+	"github.com/blenz/user-service/internal/models"
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
 	"log"
 	"net/http"
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
-	"github.com/jinzhu/gorm"
-	"github.com/blenz/user-service/internal/models"
 )
 
 type service struct {
 	router *mux.Router
-	db *gorm.DB
+	db     *gorm.DB
 }
 
 func New(db *gorm.DB) *service {
 
 	s := &service{
 		router: mux.NewRouter(),
-		db: db,
+		db:     db,
 	}
 
 	s.router.HandleFunc("/user", s.getAllUsers())
@@ -29,11 +29,11 @@ func New(db *gorm.DB) *service {
 func (s *service) getAllUsers() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("derp"))
-		s.db.Create(&models.User{ Username: "derp" })
-    }
+		s.db.Create(&models.User{Username: "derp"})
+	}
 }
 
 func (s *service) Run() {
 	log.Print("Listening...")
-    log.Fatalln(http.ListenAndServe(":5000", s.router))
+	log.Fatalln(http.ListenAndServe(":5000", s.router))
 }
