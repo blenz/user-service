@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
+	"github.com/matryer/respond"
 	"log"
 	"net/http"
 )
@@ -21,15 +22,40 @@ func New(db *gorm.DB) *service {
 		db:     db,
 	}
 
-	s.router.HandleFunc("/user", s.getAllUsers())
+	s.router.HandleFunc("/users", s.getUsers())
+	s.router.HandleFunc("/users/{id}", s.getUser())
 
 	return s
 }
 
-func (s *service) getAllUsers() http.HandlerFunc {
+func (s *service) getUsers() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("derp"))
-		s.db.Create(&models.User{Username: "derp"})
+
+		users := []*models.User{}
+		s.db.Find(&users)
+
+		respond.With(w, r, http.StatusOK, users)
+	}
+}
+
+func (s *service) getUser() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		userID := mux.Vars(r)["id"]
+
+		var user models.User
+		result := s.db.First(&user, userID)
+
+		if result.Error != nil {
+			respond.With(w, r, http.StatusBadRequest, error(http.StatusBadRequest, result.Error.Error()))
+			return
+		}
+		if result.RecordNotFound() {
+			respond.With(w, r, http.StatusNotFound, error(http.StatusNotFound, "Not Found"))
+			return
+		}
+
+		respond.With(w, r, http.StatusOK, user)
 	}
 }
 
