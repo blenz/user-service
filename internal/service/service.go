@@ -47,11 +47,13 @@ func (s *service) getUser() http.HandlerFunc {
 		result := s.db.First(&user, userID)
 
 		if result.Error != nil {
-			respond.With(w, r, http.StatusBadRequest, error(http.StatusBadRequest, result.Error.Error()))
+			respond.With(w, r, http.StatusBadRequest, 
+				error(http.StatusBadRequest, result.Error.Error()))
 			return
 		}
 		if result.RecordNotFound() {
-			respond.With(w, r, http.StatusNotFound, error(http.StatusNotFound, "Not Found"))
+			respond.With(w, r, http.StatusNotFound, 
+				error(http.StatusNotFound, "Not Found"))
 			return
 		}
 
