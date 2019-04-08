@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/blenz/user-service/internal/service" 
-	"github.com/blenz/user-service/internal/storage" 
+	"github.com/blenz/user-service/internal/service"
+	"github.com/blenz/user-service/internal/storage"
 )
 
 func main() {
