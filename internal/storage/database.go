@@ -24,4 +24,10 @@ func initTables(db *gorm.DB) {
 		db.DropTableIfExists(&models.User{})
 	}
 	db.CreateTable(&models.User{})
+
+	// TODO: clean mock data
+	db.Create(&models.User{Username: "User1"})
+	db.Create(&models.User{Username: "User2"})
+	db.Create(&models.User{Username: "User3"})
+	db.Create(&models.User{Username: "User4"})
 }
