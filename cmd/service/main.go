@@ -1,9 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"github.com/blenz/user-service/internal/service" 
+	"github.com/blenz/user-service/internal/storage" 
 )
 
 func main() {
-	fmt.Println("Hello World")
+
+	db := storage.InitDb()
+	defer db.Close()
+
+	service.New(db).Run()
 }
