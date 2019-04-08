@@ -1,10 +1,10 @@
 package storage
 
 import (
-	"log"
-	_ "github.com/lib/pq"
-	"github.com/jinzhu/gorm"
 	"github.com/blenz/user-service/internal/models"
+	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
+	"log"
 )
 
 func InitDb() *gorm.DB {
