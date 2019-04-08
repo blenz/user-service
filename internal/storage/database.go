@@ -20,6 +20,7 @@ func InitDb() *gorm.DB {
 }
 
 func initTables(db *gorm.DB) {
+	
 	if db.HasTable(&models.User{}) {
 		db.DropTableIfExists(&models.User{})
 	}
